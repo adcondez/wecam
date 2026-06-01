@@ -1,8 +1,12 @@
-
-<h2 class="sr-only">Banner promocional de feedback para dashboard de Wecam Leads App</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body, html { background: transparent; }
+  body { background: transparent; font-family: 'DM Sans', sans-serif; padding: 0; margin: 0; }
   .banner {
     background: linear-gradient(120deg, #1a1259 0%, #2d5be3 55%, #0f9e7a 100%);
     border-radius: 14px;
@@ -12,7 +16,6 @@
     gap: 28px;
     overflow: hidden;
     position: relative;
-    font-family: 'DM Sans', sans-serif;
   }
   .banner::before {
     content: '';
@@ -77,7 +80,7 @@
     text-decoration: none;
     transition: transform 0.15s, opacity 0.15s;
     border: none;
-    font-family: inherit;
+    font-family: 'DM Sans', sans-serif;
   }
   .btn:hover { transform: translateY(-1px); opacity: 0.92; }
   .btn:active { transform: translateY(0); opacity: 1; }
@@ -99,35 +102,31 @@
     position: relative;
     z-index: 1;
   }
-  .illus {
-    width: 120px;
-    height: 120px;
-  }
   @media (max-width: 520px) {
     .col-image { display: none; }
     .banner { padding: 24px 20px; }
   }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
+</head>
+<body>
 <div class="banner">
   <div class="col-text">
     <p class="eyebrow">Tu opinión importa</p>
     <h2 class="title">¿Cómo está funcionando<br>el sistema para ti?</h2>
     <p class="subtitle">Comparte peticiones, reporta un problema o cuéntanos qué mejorarías. Cada mensaje nos ayuda a hacer la plataforma más útil para tu estudio.</p>
     <div class="btn-row">
-      <a href="[URL_FORMULARIO_FEEDBACK]" target="_blank" class="btn btn-primary">
+      <a href="REEMPLAZAR_URL_FEEDBACK" target="_blank" class="btn btn-primary">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Enviar feedback
       </a>
-      <a href="[URL_FORMULARIO_SOPORTE]" target="_blank" class="btn btn-secondary">
+      <a href="REEMPLAZAR_URL_SOPORTE" target="_blank" class="btn btn-secondary">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         Reportar problema
       </a>
     </div>
   </div>
   <div class="col-image" aria-hidden="true">
-    <svg class="illus" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.07)"/>
       <rect x="22" y="30" width="76" height="52" rx="9" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
       <rect x="32" y="42" width="36" height="5" rx="2.5" fill="rgba(255,255,255,0.55)"/>
@@ -140,3 +139,5 @@
     </svg>
   </div>
 </div>
+</body>
+</html>
