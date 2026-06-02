@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║           WECAM LEADS APP — PÁGINA DE ACTUALIZACIONES         ║
+  ╠═══════════════════════════════════════════════════════════════╣
+  ║  CÓMO USAR ESTE ARCHIVO:                                      ║
+  ║                                                               ║
+  ║  • Para agregar una actualización nueva:                      ║
+  ║    Busca "COPIA ESTE BLOQUE" en la sección correspondiente    ║
+  ║    (Recientes o Próximas), copia el bloque completo           ║
+  ║    y pégalo justo debajo. Luego edita sus valores.            ║
+  ║                                                               ║
+  ║  • Para mover una actualización de "Próximas" a "Recientes":  ║
+  ║    Corta el bloque completo y pégalo en la sección            ║
+  ║    "Recientes". Quita la clase "upcoming" del div principal.  ║
+  ║                                                               ║
+  ║  • Cada ID de detalle debe ser único (detail-1, detail-2…)    ║
+  ║    Si agregas uno nuevo, usa el número siguiente en la lista. ║
+  ╚═══════════════════════════════════════════════════════════════╝
+  -->
+
+  <title>Actualizaciones — Wecam Leads App</title>
+
+  <!-- Fuente principal (la misma que usan los otros banners del proyecto) -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ═══════════════════════════════════════════════════════
+       COLORES Y VARIABLES GLOBALES
+       Si quieres cambiar colores, edita solo esta sección.
+       El resto del archivo los usa automáticamente.
+    ═══════════════════════════════════════════════════════ */
+    :root {
+      --bg:             #f6f6fb;       /* Fondo de la página */
+      --surface:        #ffffff;       /* Fondo de las tarjetas */
+      --border:         #e4e2f4;       /* Bordes y divisores */
+      --text-primary:   #14134A;       /* Texto principal */
+      --text-secondary: #58567a;       /* Texto secundario / descripciones */
+      --text-muted:     #9896b8;       /* Texto apagado / fechas */
+      --accent:         #554ed8;       /* Color de acento principal (botones, bordes activos) */
+      --accent-light:   #eeedfb;       /* Fondo suave del acento */
+      --upcoming-bg:    #f9f9fc;       /* Fondo de tarjetas "Próximas" */
+      --radius:         10px;          /* Redondeo general de tarjetas */
+      --font:           'DM Sans', sans-serif;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       RESET Y BASE
+    ═══════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      /* Máximo ancho para que se lea bien en iframe estrecho o ancho */
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       ENCABEZADO DE LA PÁGINA
+       Edita el texto dentro de <h1> y <p> si lo necesitas.
+    ═══════════════════════════════════════════════════════ */
+    .page-header {
+      margin-bottom: 36px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+    .page-header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       SECCIONES: "Recientes" y "Próximas"
+       No necesitas modificar estos estilos normalmente.
+    ═══════════════════════════════════════════════════════ */
+    .section + .section {
+      margin-top: 44px;
+    }
+
+    .section-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       TARJETA DE ACTUALIZACIÓN
+       Cada bloque de actualización usa este estilo.
+    ═══════════════════════════════════════════════════════ */
+    .update-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);   /* Línea de acento izquierda */
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 8px;
+      transition: box-shadow 0.15s;
+    }
+    .update-card:hover {
+      box-shadow: 0 2px 12px rgba(85, 78, 216, 0.07);
+    }
+
+    /* Variante para tarjetas de la sección "Próximas"
+       (borde más suave, fondo ligeramente diferente) */
+    .update-card.upcoming {
+      border-left-color: var(--border);
+      background: var(--upcoming-bg);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       ETIQUETAS DE CATEGORÍA
+       Clases disponibles para usar en <span class="tag TAG">:
+         tag-new          → "Nueva función"  (morado claro)
+         tag-mejora       → "Mejora"          (verde azulado)
+         tag-fix          → "Corrección"      (naranja suave)
+         tag-bot          → "Bot IA"          (violeta)
+         tag-flujo        → "Flujo"           (azul)
+         tag-integracion  → "Integración"     (verde)
+         tag-pronto       → "Próximamente"    (gris)
+
+       Puedes combinar varias etiquetas en una misma tarjeta.
+    ═══════════════════════════════════════════════════════ */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      line-height: 1.8;
+    }
+    .tag-new         { background: #eeedfb; color: #554ed8; }
+    .tag-mejora      { background: #e4f5f6; color: #1a8a8f; }
+    .tag-fix         { background: #fff2e5; color: #b06000; }
+    .tag-bot         { background: #f2eaff; color: #7b3dcc; }
+    .tag-flujo       { background: #e6eeff; color: #2d5fcc; }
+    .tag-integracion { background: #e5f8ee; color: #1a7a50; }
+    .tag-pronto      { background: #f0eff5; color: #9896b8; }
+
+
+    /* ═══════════════════════════════════════════════════════
+       CONTENIDO DE LA TARJETA: título, fecha, descripción
+    ═══════════════════════════════════════════════════════ */
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 7px;
+    }
+
+    .update-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.35;
+      flex: 1;
+    }
+
+    .update-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .update-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       DETALLE EXPANDIBLE
+       Se muestra u oculta al hacer clic en "Ver más".
+       No necesitas modificar estos estilos.
+    ═══════════════════════════════════════════════════════ */
+    .update-detail {
+      display: none;             /* Oculto por defecto */
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .update-detail.open {
+      display: block;            /* Visible cuando está abierto */
+    }
+    .update-detail p {
+      margin-bottom: 8px;
+    }
+    .update-detail ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+    .update-detail li {
+      margin-bottom: 5px;
+    }
+    .update-detail strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* BOTÓN VER MÁS / VER MENOS */
+    .btn-toggle {
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.15s;
+      margin-top: 2px;
+    }
+    .btn-toggle:hover { opacity: 0.7; }
+    .btn-toggle .arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+      font-style: normal;
+    }
+    .btn-toggle.open .arrow {
+      transform: rotate(180deg);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ENCABEZADO DE LA PÁGINA
+       Edita aquí el título y subtítulo de la sección.
+  ═══════════════════════════════════════════════════════ -->
+  <header class="page-header">
+    <h1>Actualizaciones del sistema</h1>
+    <p>Funcionalidades lanzadas y mejoras en camino para tu plataforma de reclutamiento.</p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+  ██████████████████████████████████████████████████████████
+       SECCIÓN: RECIENTES
+       Aquí van las funcionalidades ya activas o lanzadas.
+  ██████████████████████████████████████████████████████████
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section">
+    <p class="section-label">Recientes</p>
+
+    <!-- ┌──────────────────────────────────────────────────────────────
+         │  BLOQUE #1 — COPIA ESTE BLOQUE para agregar uno nuevo
+         │
+         │  PASOS:
+         │  1. Copia desde la línea "<div class="update-card">"
+         │     hasta su "</div>" de cierre (el que dice "FIN BLOQUE")
+         │  2. Pega el bloque justo debajo del último bloque de la sección
+         │  3. Cambia el id del detalle: detail-1 → detail-2, etc.
+         │  4. Edita etiquetas, título, fecha, descripción y detalle
+         └────────────────────────────────────────────────────────────── -->
+    <div class="update-card">
+
+      <!-- ETIQUETAS: elige las que apliquen (puedes poner varias) -->
+      <!-- Clases disponibles: tag-new · tag-mejora · tag-fix · tag-bot · tag-flujo · tag-integracion · tag-pronto -->
+      <div class="tags">
+        <span class="tag tag-new">Nueva función</span>
+        <span class="tag tag-bot">Bot IA</span>
+      </div>
+
+      <div class="card-top">
+        <!-- TÍTULO: nombre corto y claro de la actualización -->
+        <h3 class="update-title">Pre-filtro automático con IA</h3>
+        <!-- FECHA: formato libre, ej: "Jun 2025" · "Q2 2025" · "Disponible" -->
+        <span class="update-date">Jun 2025</span>
+      </div>
+
+      <!-- DESCRIPCIÓN BREVE: siempre visible, 1–2 líneas -->
+      <p class="update-desc">
+        El bot de Conversation AI califica a los candidatos automáticamente antes de que lleguen al reclutador, sin intervención manual.
+      </p>
+
+      <!-- DETALLE EXPANDIBLE: solo visible al hacer clic en "Ver más" -->
+      <!-- Si no necesitas detalle, elimina este div y el botón que le sigue -->
+      <div class="update-detail" id="detail-1">
+        <p>El pre-filtro evalúa sexo, edad, ciudad y disponibilidad en una conversación natural por WhatsApp.</p>
+        <ul>
+          <li>Los candidatos que no cumplen criterios quedan etiquetados como descartados y no avanzan al pipeline.</li>
+          <li>Los candidatos válidos crean una oportunidad automáticamente y quedan asignados al reclutador.</li>
+          <li>Todo el historial de la conversación queda registrado en el contacto de GHL.</li>
+        </ul>
+      </div>
+
+      <!-- BOTÓN VER MÁS: elimina si no hay detalle expandible -->
+      <button class="btn-toggle" onclick="toggleDetail('detail-1', this)">
+        Ver más <span class="arrow">↓</span>
+      </button>
+
+    </div>
+    <!-- FIN BLOQUE #1 ──────────────────────────────────────────────── -->
+
+
+    <!-- BLOQUE #2 ──────────────────────────────────────────────────── -->
+    <div class="update-card">
+
+      <div class="tags">
+        <span class="tag tag-flujo">Flujo</span>
+      </div>
+
+      <div class="card-top">
+        <h3 class="update-title">Pipeline de reclutamiento v1</h3>
+        <span class="update-date">Jun 2025</span>
+      </div>
+
+      <p class="update-desc">
+        Pipeline principal activo con etapas definidas desde captación hasta onboarding, con criterios de avance y SLA configurados.
+      </p>
+
+      <div class="update-detail" id="detail-2">
+        <p>El pipeline cubre el ciclo completo del candidato:</p>
+        <ul>
+          <li><strong>Nuevo lead → Pre-filtro → Agenda → Entrevista → Resultado → Onboarding</strong></li>
+          <li>Cada etapa tiene criterios claros para avanzar o descartar.</li>
+          <li>Los SLA de respuesta alertan al reclutador si un lead lleva demasiado tiempo sin movimiento.</li>
+        </ul>
+      </div>
+
+      <button class="btn-toggle" onclick="toggleDetail('detail-2', this)">
+        Ver más <span class="arrow">↓</span>
+      </button>
+
+    </div>
+    <!-- FIN BLOQUE #2 ──────────────────────────────────────────────── -->
+
+
+    <!-- BLOQUE #3 ──────────────────────────────────────────────────── -->
+    <div class="update-card">
+
+      <div class="tags">
+        <span class="tag tag-integracion">Integración</span>
+        <span class="tag tag-mejora">Mejora</span>
+      </div>
+
+      <div class="card-top">
+        <h3 class="update-title">Canal WhatsApp vía GoGHL</h3>
+        <span class="update-date">Jun 2025</span>
+      </div>
+
+      <p class="update-desc">
+        Los mensajes de WhatsApp ahora se procesan como SMS dentro de GHL, habilitando el bot de IA y los workflows sin configuración adicional.
+      </p>
+
+      <!-- Sin detalle expandible en este bloque: no se agrega div ni botón -->
+
+    </div>
+    <!-- FIN BLOQUE #3 ──────────────────────────────────────────────── -->
+
+
+  </section>
+  <!-- FIN SECCIÓN: RECIENTES ═════════════════════════════════════════ -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+  ██████████████████████████████████████████████████████████
+       SECCIÓN: PRÓXIMAS
+       Aquí van las funcionalidades en desarrollo o planeadas.
+       Agrega la clase "upcoming" al div principal de cada tarjeta.
+  ██████████████████████████████████████████████████████████
+  ═══════════════════════════════════════════════════════ -->
+  <section class="section">
+    <p class="section-label">Próximas</p>
+
+    <!-- BLOQUE #4 — PRÓXIMO ─────────────────────────────────────────
+         Nota: usa "update-card upcoming" para el estilo diferenciado
+    ──────────────────────────────────────────────────────────────── -->
+    <div class="update-card upcoming">
+
+      <div class="tags">
+        <span class="tag tag-new">Nueva función</span>
+        <span class="tag tag-pronto">Próximamente</span>
+      </div>
+
+      <div class="card-top">
+        <h3 class="update-title">Gestión multi-sede (plan STUDIO)</h3>
+        <span class="update-date">Q3 2025</span>
+      </div>
+
+      <p class="update-desc">
+        Soporte para dos o más sedes desde una misma cuenta, con routing automático de leads según la ciudad del candidato.
+      </p>
+
+      <div class="update-detail" id="detail-4">
+        <p>El plan STUDIO habilitará:</p>
+        <ul>
+          <li>Dos ubicaciones activas con configuración independiente por sede.</li>
+          <li>Routing automático basado en la ciudad declarada por el candidato.</li>
+          <li>Custom Values para personalizar mensajes según la sede asignada.</li>
+        </ul>
+      </div>
+
+      <button class="btn-toggle" onclick="toggleDetail('detail-4', this)">
+        Ver más <span class="arrow">↓</span>
+      </button>
+
+    </div>
+    <!-- FIN BLOQUE #4 ──────────────────────────────────────────────── -->
+
+
+    <!-- BLOQUE #5 — PRÓXIMO ────────────────────────────────────────── -->
+    <div class="update-card upcoming">
+
+      <div class="tags">
+        <span class="tag tag-mejora">Mejora</span>
+        <span class="tag tag-pronto">Próximamente</span>
+      </div>
+
+      <div class="card-top">
+        <h3 class="update-title">Panel de reportes de reclutamiento</h3>
+        <span class="update-date">Q3 2025</span>
+      </div>
+
+      <p class="update-desc">
+        Vista consolidada de KPIs: leads captados, entrevistas agendadas, show rate y conversión por etapa del pipeline.
+      </p>
+
+      <!-- Sin detalle expandible -->
+
+    </div>
+    <!-- FIN BLOQUE #5 ──────────────────────────────────────────────── -->
+
+
+    <!-- BLOQUE #6 — PRÓXIMO ────────────────────────────────────────── -->
+    <div class="update-card upcoming">
+
+      <div class="tags">
+        <span class="tag tag-bot">Bot IA</span>
+        <span class="tag tag-pronto">Próximamente</span>
+      </div>
+
+      <div class="card-top">
+        <h3 class="update-title">Reactivación automática de leads fríos</h3>
+        <span class="update-date">Q4 2025</span>
+      </div>
+
+      <p class="update-desc">
+        Secuencia automatizada para retomar el contacto con candidatos que no respondieron o quedaron inactivos en el pipeline.
+      </p>
+
+      <div class="update-detail" id="detail-6">
+        <p>La secuencia de reactivación incluirá:</p>
+        <ul>
+          <li>Mensajes escalonados por WhatsApp con intervalos configurables.</li>
+          <li>Detección automática de respuesta para pausar la secuencia.</li>
+          <li>Tag y etapa de pipeline actualizados al reactivarse el lead.</li>
+        </ul>
+      </div>
+
+      <button class="btn-toggle" onclick="toggleDetail('detail-6', this)">
+        Ver más <span class="arrow">↓</span>
+      </button>
+
+    </div>
+    <!-- FIN BLOQUE #6 ──────────────────────────────────────────────── -->
+
+
+  </section>
+  <!-- FIN SECCIÓN: PRÓXIMAS ══════════════════════════════════════════ -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       JAVASCRIPT
+       Controla el acordeón "Ver más / Ver menos".
+       No es necesario modificar este bloque.
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+    function toggleDetail(detailId, btn) {
+      var detail = document.getElementById(detailId);
+      var isOpen = detail.classList.contains('open');
+
+      // Alterna la visibilidad del detalle
+      detail.classList.toggle('open', !isOpen);
+
+      // Alterna el estado del botón (para girar la flecha)
+      btn.classList.toggle('open', !isOpen);
+
+      // Cambia el texto del botón
+      var arrow = '<span class="arrow">↓</span>';
+      btn.innerHTML = !isOpen
+        ? 'Ver menos ' + arrow
+        : 'Ver más '   + arrow;
+    }
+  </script>
+
+</body>
+</html>
