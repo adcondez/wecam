@@ -556,59 +556,93 @@ html, body {
 .fb-btn:hover { transform: translateY(-1px); border-color: var(--purple); color: var(--purple); }
 .fb-btn.sel-yes { background: var(--purple); color: var(--white); border-color: var(--purple); }
 .fb-btn.sel-no  { background: #fff3f3; border-color: #f0a0a0; color: #b02020; }
-.fb-follow {
+/* estado post-clic — contenedor compartido */
+.fb-state {
   margin-top: 16px;
   display: none;
   position: relative;
   z-index: 1;
 }
-.fb-follow.visible { display: block; }
-.fb-follow label {
-  display: block;
+.fb-state.visible { display: block; }
+
+/* estado YES */
+.fb-yes-confirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.fb-yes-confirm svg { width: 18px; height: 18px; stroke: #2a9a68; fill: none; stroke-width: 2.5; flex-shrink: 0; }
+.fb-yes-confirm p { font-size: 14px; font-weight: 600; color: var(--navy); }
+.fb-yes-cta {
   font-size: 13px;
   color: var(--text-mid);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  line-height: 1.5;
 }
-.fb-follow input {
-  width: 100%;
-  height: 42px;
-  border: 1.5px solid var(--purple-mid);
-  border-radius: var(--radius-sm);
-  padding: 0 14px;
-  font-size: 13px;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text-dark);
-  background: var(--white);
-  margin-bottom: 10px;
-  outline: none;
-  max-width: 520px;
-  display: block;
-}
-.fb-follow input:focus { border-color: var(--purple); }
-.fb-follow button {
+.fb-opinion-link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  padding: 9px 22px;
-  background: var(--purple);
-  color: var(--white);
-  border: none;
+  color: var(--purple);
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 1.5px solid var(--purple-mid);
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background .15s, transform .1s;
+  background: var(--white);
+  transition: background .15s, color .15s, border-color .15s;
 }
-.fb-follow button:hover { background: var(--purple-hover); transform: translateY(-1px); }
-.fb-thanks {
+.fb-opinion-link:hover { background: var(--purple); color: var(--white); border-color: var(--purple); }
+.fb-opinion-link svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* estado NO — mini selector estilo feedback.html */
+.fb-no-label {
   font-size: 13px;
   color: var(--text-mid);
-  font-style: italic;
-  margin-top: 12px;
-  display: none;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 10px;
+}
+.fb-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.fb-opt {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.fb-opt:hover {
+  border-color: var(--purple-mid);
+  background: var(--purple-light);
+  box-shadow: 0 2px 10px rgba(85,78,216,0.08);
+}
+.fb-opt-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.fb-opt-icon svg { width: 15px; height: 15px; stroke: var(--purple); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke .15s; }
+.fb-opt:hover .fb-opt-icon { background: var(--purple); }
+.fb-opt:hover .fb-opt-icon svg { stroke: var(--white); }
+.fb-opt-title { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.fb-opt-desc  { font-size: 11px; color: var(--text-soft); line-height: 1.4; }
+
+@media (max-width: 500px) {
+  .fb-options { grid-template-columns: 1fr; }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -727,15 +761,51 @@ html, body {
         </button>
       </div>
     </div>
-    <div class="fb-follow" id="fb-follow">
-      <label>¿Qué tema no encontraste?</label>
-      <input type="text" id="fb-input" placeholder="Ej: cómo reactivar un lead frío, errores en el bot…" />
-      <button onclick="submitFeedback()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        Enviar
-      </button>
+
+    <!-- Estado YES -->
+    <div class="fb-state" id="fb-state-yes">
+      <div class="fb-yes-confirm">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <p>¡Nos alegra que hayas encontrado lo que necesitabas!</p>
+      </div>
+      <p class="fb-yes-cta">Si quieres, puedes dejarnos tu opinión sobre la plataforma.</p>
+      <a href="https://wecamdoit.com/feedback?tipo=opinion" target="_blank" class="fb-opinion-link">
+        Dejar opinión
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
     </div>
-    <p class="fb-thanks" id="fb-thanks"></p>
+
+    <!-- Estado NO — mini selector que conecta con los formularios de feedback -->
+    <div class="fb-state" id="fb-state-no">
+      <p class="fb-no-label">¿Sobre qué quieres escribirnos?</p>
+      <div class="fb-options">
+
+        <a href="https://wecamdoit.com/feedback?tipo=sugerencia" target="_blank" class="fb-opt">
+          <div class="fb-opt-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 3-2 5.5-4 7v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1C7 14.5 5 12 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+          </div>
+          <p class="fb-opt-title">Falta un tutorial</p>
+          <p class="fb-opt-desc">Sugerirnos un tema nuevo</p>
+        </a>
+
+        <a href="https://wecamdoit.com/feedback?tipo=funcion" target="_blank" class="fb-opt">
+          <div class="fb-opt-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <p class="fb-opt-title">Pedir una función</p>
+          <p class="fb-opt-desc">Algo que quisieras tener</p>
+        </a>
+
+        <a href="https://wecamdoit.com/feedback?tipo=error" target="_blank" class="fb-opt">
+          <div class="fb-opt-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <p class="fb-opt-title">Reportar un error</p>
+          <p class="fb-opt-desc">Algo no funciona como debería</p>
+        </a>
+
+      </div>
+    </div>
   </section>
 
   <!-- SOPORTE -->
@@ -1102,37 +1172,20 @@ function closePlayer() {
 
 /* ─── FEEDBACK ───────────────────────────────────────────────────── */
 function onFeedback(type) {
+  // Resetear estados de botones
   document.getElementById('fb-yes').classList.remove('sel-yes');
   document.getElementById('fb-no').classList.remove('sel-no');
-  const follow = document.getElementById('fb-follow');
-  const thanks = document.getElementById('fb-thanks');
+  // Ocultar ambos estados
+  document.getElementById('fb-state-yes').classList.remove('visible');
+  document.getElementById('fb-state-no').classList.remove('visible');
+
   if (type === 'yes') {
     document.getElementById('fb-yes').classList.add('sel-yes');
-    follow.classList.remove('visible');
-    thanks.style.display = 'block';
-    thanks.textContent = '¡Gracias! Nos alegra que hayas encontrado lo que necesitabas.';
+    document.getElementById('fb-state-yes').classList.add('visible');
   } else {
     document.getElementById('fb-no').classList.add('sel-no');
-    follow.classList.add('visible');
-    thanks.style.display = 'none';
+    document.getElementById('fb-state-no').classList.add('visible');
   }
-}
-
-function submitFeedback() {
-  const val = document.getElementById('fb-input').value.trim();
-  if (!val) return;
-  /* ── Conectar a webhook de GHL u otro destino ──────────────────────
-     Descomenta y reemplaza la URL cuando estés listo:
-     fetch('REEMPLAZAR_URL_WEBHOOK', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ tema_faltante: val, timestamp: new Date().toISOString() })
-     });
-  ────────────────────────────────────────────────────────────────── */
-  document.getElementById('fb-follow').classList.remove('visible');
-  const thanks = document.getElementById('fb-thanks');
-  thanks.style.display = 'block';
-  thanks.textContent = '¡Gracias! Tu mensaje nos ayuda a mejorar el centro de ayuda.';
 }
 
 /* ─── TECLADO ────────────────────────────────────────────────────── */
